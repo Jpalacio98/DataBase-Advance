@@ -1,0 +1,6 @@
+// Crea un nuevo keyspace llamado "dbcolumnas" con una estrategia de replicación SimpleStrategy
+// y un factor de replicación de 1. Asegúrate de ajustar el factor de replicación según tus necesidades.
+CREATE KEYSPACE dbcolumnas WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+// Usa el keyspace "dbcolumnas" recién creado para que todas las consultas subsiguientes se realicen en este keyspace.
+USE dbcolumnas;
