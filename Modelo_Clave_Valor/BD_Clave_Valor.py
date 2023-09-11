@@ -384,12 +384,8 @@ def filtrado(filtros,listcampos):
                         if res:
                             data[key]=item
         listData.append(data)
-
-    print(listData)
-    atributos = []#set(list(listData[0].keys()))
-    for diccionario in listData[1:]:
-        atributos = atributos.intersection(set(list(diccionario.keys())))
-    print(list(atributos))
+    atrubutrosM
+    for item in listData:
     
 
 
