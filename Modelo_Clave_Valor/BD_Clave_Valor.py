@@ -373,6 +373,7 @@ def CreateFilter(campo,operador,value):
 
 def filtrado(filtros,listcampos):
     listData=[]
+    atrubutros=[]
     for tipo, campos in listcampos:
         datos = get_data(tipo)
         data={}
@@ -384,11 +385,9 @@ def filtrado(filtros,listcampos):
                         if res:
                             data[key]=item
         listData.append(data)
-    atrubutros=[]
-    for item in listData:
-        data = item.copy()
-        att= list(data.values())[0].keys()
-        atrubutros.append(att)
+        atrubutros.append(list(data.values()).keys())
+    
+    print(atrubutros)
     
 
 
