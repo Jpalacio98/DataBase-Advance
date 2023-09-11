@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1214</width>
-    <height>671</height>
+    <width>1215</width>
+    <height>732</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -97,7 +97,7 @@ border-color: rgb(33, 33, 33);</string>
             <x>0</x>
             <y>0</y>
             <width>410</width>
-            <height>611</height>
+            <height>672</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -800,8 +800,8 @@ border-radius: 5px;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>787</width>
-            <height>628</height>
+            <width>788</width>
+            <height>689</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_17">
