@@ -32,7 +32,7 @@ def configureUI(self):
         ]
 
     # Realizar cambios en la interfaz
-    self.statusbar.setStyleSheet(f"background-color: rgb(170, 255, 127); color: white;")
+    self.statusbar.setStyleSheet(f"background-color:  rgb(147, 194, 255); color: black;")
     self.cbox_Campo.addItems(campos)
     self.frame_rango.setVisible(False)
     self.cbox_Condicion.currentTextChanged.connect(lambda:ValorChanged(self))

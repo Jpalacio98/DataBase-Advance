@@ -359,7 +359,7 @@ def CreateFilter(campo,operador,value):
     res = eval(valor, {"item": campo, "value": value}) 
     return res
 
-# def filtrado(filtros,campos):
+# def filtradoU(filtros,campos):
 #     dataSet ={}
 #     for clave, datos in campos:
 #         reg = get_data(clave)
@@ -370,10 +370,15 @@ def CreateFilter(campo,operador,value):
 #                         valor= CreateFilter(item[reg],filt[1],filt[2])
 #                         if valor:
 #                             dataSet[key]= item
+#     return dataSet
+    
 
-def filtrado(filtros,listcampos):
+def filtradoV(filtros,listcampos):
     listData=[]
-    atrubutros=[]
+    atributos=[]
+    combinacionData=[]
+    final_data={}
+
     for tipo, campos in listcampos:
         datos = get_data(tipo)
         data={}
@@ -385,10 +390,32 @@ def filtrado(filtros,listcampos):
                         if res:
                             data[key]=item
         listData.append(data)
-        atrubutros.append(list(data.values()).keys())
     
-    print(atrubutros)
-    
+    for data in listData:
+        if len(data) != 0:
+            atributos.append( list(data.values())[0].keys())
+            print(atributos)
+        else:
+            atributos.append([])
+
+    for i in range(len(atributos)):
+        for j in range(i + 1, len(atributos)):
+            atributos_comunes = set(atributos[i]).intersection(set(atributos[j]))
+            if len(atributos_comunes) > 0:
+                combinacionData.append([i, j, list(atributos_comunes)])
+            
+    print(combinacionData)
+    for comb in combinacionData:
+        tabla1=listData[comb[0]]
+        tabla2=listData[comb[1]]
+        for atrib in comb[2]:
+            for key1,tab1 in tabla1.items():
+                for key2,tab2 in tabla2.items():
+                    if tab1[atrib] == tab2[atrib]:
+                        final_data[key1]=tab1
+
+    return final_data
+
 
 
 
