@@ -384,8 +384,11 @@ def filtrado(filtros,listcampos):
                         if res:
                             data[key]=item
         listData.append(data)
-    atrubutrosM
+    atrubutros=[]
     for item in listData:
+        data = item.copy()
+        att= list(data.values())[0].keys()
+        atrubutros.append(att)
     
 
 
