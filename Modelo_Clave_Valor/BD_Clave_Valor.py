@@ -152,6 +152,133 @@ def buscar(lista,criterio,id):
             return i
 
 listaTablas=[[departamento,"departamento"],[municipio,"municipio"],[beneficiario,"beneficiario"],[programa,"Programa"]]
+
+def Filtro(campo,operador,value, lista={}):
+    print(campo)
+    if not lista:
+        results = selectDatos(campo)
+    else:
+        results = lista.copy()
+        lista.clear()
+
+    for clave, element in results.items():
+        valor = f'item {operador} value'  # Utiliza un f-string para construir la expresión
+        res = eval(valor, {"item": element[campo], "value": value}) 
+        if res:
+            lista[clave]= element
+    print("")
+    print("")
+    return lista
+
+def selectDatos(campo):
+    print(campo)
+    for tabla in listaTablas:
+        for item in tabla[0]:
+            if item == campo:
+                if tabla[1]=="Departamento":
+                    return listarTablaDpto()
+                elif tabla[1]=="municipio":
+                    return listarTablaMun()
+                elif tabla[1]=="beneficiario":
+                    return listarTablabeneficiarios()
+                else:
+                    return listarTablaPrograma()
+
+def tablaname(listacampo):
+    listDpto =[]
+    listMun =[]
+    listBenf =[]
+    listProg =[]
+    for tabla in listaTablas:
+        for item in tabla[0]:
+            for campo in listacampo:
+                if item == campo:
+                    if tabla[1]=="departamento":
+                        listDpto.append(campo)
+                    elif tabla[1]=="municipio":
+                        listMun.append(campo)
+                    elif tabla[1]=="beneficiario":
+                        listBenf.append(campo)
+                    else:
+                        listProg.append(campo)
+                    
+    return[["departamento",listDpto],["municipio",listMun],["beneficiario",listBenf],["programa",listProg]]
+
+def get_data(dato):
+    if dato=="Departamento":
+        return listarTablaDpto()
+    elif dato=="municipio":
+        return listarTablaMun()
+    elif dato=="beneficiario":
+        return listarTablabeneficiarios()
+    else:
+        return listarTablaPrograma()
+
+
+def CreateFilter(campo,operador,value):
+    valor = f'item {operador} value'  # Utiliza un f-string para construir la expresión
+    res = eval(valor, {"item": campo, "value": value}) 
+    return res
+
+def filtradoV(filtros,listcampos):
+    listData=[]
+    atributos=[]
+    combinacionData=[]
+    final_data={}
+
+    for tipo, campos in listcampos:
+        datos = get_data(tipo)
+        data={}
+        for key, item in datos.items():
+            for camp in campos:
+                for filt in filtros:
+                    if camp == filt[0]:
+                        res = CreateFilter(item[camp],filt[1],filt[2])
+                        if res:
+                            data[key]=item
+        listData.append(data)
+    
+    for data in listData:
+        if len(data) != 0:
+            atributos.append( list(data.values())[0].keys())
+            print(atributos)
+        else:
+            atributos.append([])
+
+    for i in range(len(atributos)):
+        for j in range(i + 1, len(atributos)):
+            atributos_comunes = set(atributos[i]).intersection(set(atributos[j]))
+            if len(atributos_comunes) > 0:
+                combinacionData.append([i, j, list(atributos_comunes)])
+            
+    print(combinacionData)
+    for comb in combinacionData:
+        tabla1=listData[comb[0]]
+        tabla2=listData[comb[1]]
+        for atrib in comb[2]:
+            for key1,tab1 in tabla1.items():
+                for key2,tab2 in tabla2.items():
+                    if tab1[atrib] == tab2[atrib]:
+                        final_data[key1]=tab1
+
+    return final_data
+
+
+
+
+# results = listarTablabeneficiarios()
+# lista ={}
+# for clave, element in results.items():
+#     if element['bancarizado']=='NO':
+#         lista[clave]=element
+
+# results2= lista.copy()
+# lista.clear()
+# for clave, element in results2.items():
+#     if element['discapacidad']=='SI':
+#         lista[clave]=element
+# print(lista)
+
 #-------llenado de tablas------#
 # res = llenarTablaDpto()
 # Resultados(res)
@@ -290,144 +417,3 @@ listaTablas=[[departamento,"departamento"],[municipio,"municipio"],[beneficiario
 
 # 
 # res = Resultados(lista)
-
-def Filtro(campo,operador,value, lista={}):
-    print(campo)
-    if not lista:
-        results = selectDatos(campo)
-    else:
-        results = lista.copy()
-        lista.clear()
-
-    for clave, element in results.items():
-        valor = f'item {operador} value'  # Utiliza un f-string para construir la expresión
-        res = eval(valor, {"item": element[campo], "value": value}) 
-        if res:
-            lista[clave]= element
-    print("")
-    print("")
-    return lista
-
-
-def selectDatos(campo):
-    print(campo)
-    for tabla in listaTablas:
-        for item in tabla[0]:
-            if item == campo:
-                if tabla[1]=="Departamento":
-                    return listarTablaDpto()
-                elif tabla[1]=="municipio":
-                    return listarTablaMun()
-                elif tabla[1]=="beneficiario":
-                    return listarTablabeneficiarios()
-                else:
-                    return listarTablaPrograma()
-
-def tablaname(listacampo):
-    listDpto =[]
-    listMun =[]
-    listBenf =[]
-    listProg =[]
-    for tabla in listaTablas:
-        for item in tabla[0]:
-            for campo in listacampo:
-                if item == campo:
-                    if tabla[1]=="departamento":
-                        listDpto.append(campo)
-                    elif tabla[1]=="municipio":
-                        listMun.append(campo)
-                    elif tabla[1]=="beneficiario":
-                        listBenf.append(campo)
-                    else:
-                        listProg.append(campo)
-                    
-    return[["departamento",listDpto],["municipio",listMun],["beneficiario",listBenf],["programa",listProg]]
-
-def get_data(dato):
-    if dato=="Departamento":
-        return listarTablaDpto()
-    elif dato=="municipio":
-        return listarTablaMun()
-    elif dato=="beneficiario":
-        return listarTablabeneficiarios()
-    else:
-        return listarTablaPrograma()
-
-
-def CreateFilter(campo,operador,value):
-    valor = f'item {operador} value'  # Utiliza un f-string para construir la expresión
-    res = eval(valor, {"item": campo, "value": value}) 
-    return res
-
-# def filtradoU(filtros,campos):
-#     dataSet ={}
-#     for clave, datos in campos:
-#         reg = get_data(clave)
-#         for key, item in reg:
-#             for ref in datos:
-#                 for filt in filtros:
-#                     if ref == filt[0]:
-#                         valor= CreateFilter(item[reg],filt[1],filt[2])
-#                         if valor:
-#                             dataSet[key]= item
-#     return dataSet
-    
-
-def filtradoV(filtros,listcampos):
-    listData=[]
-    atributos=[]
-    combinacionData=[]
-    final_data={}
-
-    for tipo, campos in listcampos:
-        datos = get_data(tipo)
-        data={}
-        for key, item in datos.items():
-            for camp in campos:
-                for filt in filtros:
-                    if camp == filt[0]:
-                        res = CreateFilter(item[camp],filt[1],filt[2])
-                        if res:
-                            data[key]=item
-        listData.append(data)
-    
-    for data in listData:
-        if len(data) != 0:
-            atributos.append( list(data.values())[0].keys())
-            print(atributos)
-        else:
-            atributos.append([])
-
-    for i in range(len(atributos)):
-        for j in range(i + 1, len(atributos)):
-            atributos_comunes = set(atributos[i]).intersection(set(atributos[j]))
-            if len(atributos_comunes) > 0:
-                combinacionData.append([i, j, list(atributos_comunes)])
-            
-    print(combinacionData)
-    for comb in combinacionData:
-        tabla1=listData[comb[0]]
-        tabla2=listData[comb[1]]
-        for atrib in comb[2]:
-            for key1,tab1 in tabla1.items():
-                for key2,tab2 in tabla2.items():
-                    if tab1[atrib] == tab2[atrib]:
-                        final_data[key1]=tab1
-
-    return final_data
-
-
-
-
-# results = listarTablabeneficiarios()
-# lista ={}
-# for clave, element in results.items():
-#     if element['bancarizado']=='NO':
-#         lista[clave]=element
-
-# results2= lista.copy()
-# lista.clear()
-# for clave, element in results2.items():
-#     if element['discapacidad']=='SI':
-#         lista[clave]=element
-# print(lista)
