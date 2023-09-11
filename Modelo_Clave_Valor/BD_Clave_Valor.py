@@ -385,12 +385,13 @@ def filtrado(filtros,listcampos):
                             data[key]=item
         listData.append(data)
 
-    atributos =[]
-    for index in listData:
-        att = list(index.values())[0].keys()
-        atributos.append(att)
-    
+    atributos = []
+    for diccionario in listData:
+        for key in diccionario.keys():
+            if key not in atributos:
+                atributos.append(key)
     print(atributos)
+
     
 
 
